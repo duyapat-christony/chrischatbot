@@ -100,7 +100,7 @@ const showLoadingAnimation = () => {
                     <div class="loading-bar"></div>
                   </div>
                 </div>
-                <span onClick="copyMessage(this)" class="icon material-symbols-rounded">content_copy</span>`;
+                <span onClick="copyMessage(this)" class="icon material-symbols-rounded" style="float: right;">content_copy</span>`;
 
   const incomingMessageDiv = createMessageElement(html, "incoming", "loading");
   chatContainer.appendChild(incomingMessageDiv);
