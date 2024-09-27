@@ -121,7 +121,7 @@ body.hide-header .header {
   padding: 0 0.5rem 12rem 0.5rem;
   max-height: 100vh;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
   max-width: 100%;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -372,6 +372,9 @@ body.hide-header .header {
   }
   .chat-list {
     font-size: 0.85rem;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
   }
   .typing-form .typing-input {
     font-size: 0.85rem;
