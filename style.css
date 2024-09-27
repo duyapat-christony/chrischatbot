@@ -342,3 +342,13 @@ body.hide-header .header {
     margin-top: 0.5rem;
   }
 }
+
+@media (max-width: 600px) {
+  .chat-list .message .avatar {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+    border-radius: 50%;
+    align-self: flex-start;
+  }
+}
