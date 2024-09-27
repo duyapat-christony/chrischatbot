@@ -135,7 +135,7 @@ body.hide-header .header {
 .message.outgoing {
   background: var(--secondary-color);
   margin-top: 1rem;
-  padding: 1rem 1rem 1rem 0;
+  padding: 1.5rem 1rem 1rem 0;
   border-radius: 0 1rem 0 0;
 }
 
@@ -147,7 +147,7 @@ body.hide-header .header {
 
 .chat-list .message .message-content {
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
   width: 100%;
   align-items: center;
 }
@@ -368,5 +368,8 @@ body.hide-header .header {
     object-fit: cover;
     border-radius: 50%;
     align-self: flex-start;
+  }
+  .chat-list {
+    font-size: 0.85rem;
   }
 }
