@@ -171,6 +171,7 @@ body.hide-header .header {
   object-fit: cover;
   border-radius: 50%;
   align-self: flex-start;
+  margin-left: 1rem;
 }
 
 .chat-list .message.loading .avatar {
