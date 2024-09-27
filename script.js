@@ -15,11 +15,10 @@ const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:
 // Load theme and chat data from local storage on page load
 const loadDataFromLocalstorage = () => {
   const savedChats = localStorage.getItem("saved-chats");
-  const isLightMode = (localStorage.getItem("themeColor") === "light_mode");
 
-  // Apply the stored theme
-  document.body.classList.toggle("light_mode", isLightMode);
-  toggleThemeButton.innerText = isLightMode ? "dark_mode" : "light_mode";
+  // Apply light mode as the default theme
+  document.body.classList.add("light_mode");
+  toggleThemeButton.innerText = "dark_mode"; // Set button to allow toggling to dark mode
 
   // Restore saved chats or clear the chat container
   chatContainer.innerHTML = savedChats || '';
