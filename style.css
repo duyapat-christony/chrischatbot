@@ -118,14 +118,31 @@ body.hide-header .header {
 }
 
 .chat-list {
-  padding: 2rem 1rem 12rem;
+  padding: 0 0.5rem 12rem 0.5rem;
   max-height: 100vh;
   overflow-y: auto;
+  overflow-x: hidden;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
   scrollbar-color: #999 transparent;
 }
 
-.chat-list .message.incoming {
+.chat-list {
   margin-top: 1.5rem;
+}
+
+.message.outgoing {
+  background: var(--secondary-color);
+  margin-top: 1rem;
+  padding: 1rem 1rem 1rem 0;
+  border-radius: 0 1rem 0 0;
+}
+
+.message.incoming {
+  background: var(--secondary-color);
+  border-radius: 0 0 1rem 1rem;
+  padding: 0 1rem 0 0;
 }
 
 .chat-list .message .message-content {
