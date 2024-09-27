@@ -372,4 +372,7 @@ body.hide-header .header {
   .chat-list {
     font-size: 0.85rem;
   }
+  .typing-form .typing-input {
+    font-size: 0.85rem;
+  }
 }
