@@ -57,9 +57,9 @@ body.hide-header .header {
 .header .title {
   width: fit-content;
   font-size: 3rem;
-  background-clip: text;
   background: linear-gradient(to right, #4285f4, #d96570);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
