@@ -32,7 +32,7 @@ body {
   background: var(--primary-color);
 }
 
-.header, .chat-list .message, .typing-form {
+.header, .typing-form {
   margin: 0 auto;
   max-width: 980px;
 }
@@ -121,15 +121,13 @@ body.hide-header .header {
   padding: 0 0.5rem 12rem 0.5rem;
   max-height: 100vh;
   overflow-y: auto;
-  overflow-x: auto;
-  max-width: 100%;
   overflow-wrap: break-word;
   word-wrap: break-word;
   scrollbar-color: #999 transparent;
-}
-
-.chat-list {
   margin-top: 1.5rem;
+  overflow-x: hidden;
+  max-width: 980px;
+  margin: 0 auto;
 }
 
 .message.outgoing {
@@ -137,13 +135,22 @@ body.hide-header .header {
   margin-top: 1.5rem;
   padding: 1rem 1rem 1rem 0;
   border-radius: 0 2rem 2rem 2rem;
+  width: max-content;
+  word-wrap: break-word;
+  max-width: 90%;
+  margin-left: auto;
 }
 
 .message.incoming {
   background: var(--secondary-color);
   border-radius: 2rem 0 2rem 2rem;
-  padding: 1rem 1rem 1rem 0;
+  padding: 1.3rem 1rem 1.3rem 0;
   margin-top: 0.5rem;
+  width: max-content;
+  min-width: 80%;
+  max-width: 100%;
+  word-wrap: break-word;
+  margin-right: auto;
 }
 
 .chat-list .message .message-content {
