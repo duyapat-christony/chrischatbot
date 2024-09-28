@@ -149,11 +149,22 @@ toggleThemeButton.addEventListener("click", () => {
 
 // Delete all chats from local storage when button is clicked
 deleteChatButton.addEventListener("click", () => {
-  if (confirm("Are you sure you want to delete all the chats?")) {
-    localStorage.removeItem("saved-chats");
-    loadDataFromLocalstorage();
-  }
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "Do you want to delete all the chats?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, delete it!',
+    cancelButtonText: 'No, keep them',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      localStorage.removeItem("saved-chats");
+      loadDataFromLocalstorage();
+      Swal.fire('Deleted!', 'All your chats have been deleted.', 'success');
+    }
+  });
 });
+
 
 // Set userMessage and handle outgoing chat when a suggestion is clicked
 suggestions.forEach(suggestion => {
