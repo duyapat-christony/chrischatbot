@@ -117,46 +117,9 @@ body.hide-header .header {
   background: var(--primary-color);
 }
 
-.chat-list {
-  padding: 0 0.5rem 12rem 0.5rem;
-  max-height: 100vh;
-  overflow-y: auto;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  scrollbar-color: #999 transparent;
-  margin-top: 1.5rem;
-  overflow-x: hidden;
-  max-width: 980px;
-  margin: 0 auto;
-}
-
-.message.outgoing {
-  background: var(--secondary-color);
-  margin-top: 1.5rem;
-  padding: 1rem 1rem 1rem 0;
-  border-radius: 0 2rem 2rem 2rem;
-  width: max-content;
-  word-wrap: break-word;
-  max-width: 90%;
-  margin-left: auto;
-}
-
-.message.incoming {
-  background: var(--secondary-color);
-  border-radius: 2rem 0 2rem 2rem;
-  padding: 1.3rem 1rem 1.3rem 0;
-  margin-top: 0.5rem;
-  width: max-content;
-  min-width: 80%;
-  max-width: 100%;
-  word-wrap: break-word;
-  margin-right: auto;
-}
-
 .chat-list .message .message-content {
   display: flex;
   gap: 1rem;
-  width: 100%;
   align-items: center;
 }
 
@@ -380,10 +343,46 @@ body.hide-header .header {
   .chat-list {
     font-size: 0.85rem;
     max-width: 100%;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
   }
   .typing-form .typing-input {
     font-size: 0.85rem;
   }
+}
+
+/*customize the message.incoming and .outgoing*/
+.chat-list {
+  padding: 0 0.5rem 12rem 0.5rem;
+  max-height: 100vh;
+  overflow-y: auto;
+  scrollbar-color: #999 transparent;
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.message.outgoing {
+  background: var(--secondary-color);
+  margin-top: 1.5rem;
+  padding: 1rem 1rem 1rem 0;
+  border-radius: 0 2rem 2rem 2rem;
+  width: max-content;
+  max-width: 90%;
+  margin-left: auto;
+}
+
+.message.incoming {
+  background: var(--secondary-color);
+  border-radius: 2rem 0 2rem 2rem;
+  padding: 1.3rem 1rem 1.3rem 0;
+  margin-top: 0.5rem;
+  width: max-content;
+  min-width: 80%;
+  max-width: 100%;
+  margin-right: auto;
+}
+
+.chat-list, .message, .message-content, .message.incoming, .message.outgoing, .text {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
