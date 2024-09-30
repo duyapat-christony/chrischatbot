@@ -18,6 +18,7 @@ const loadDataFromLocalstorage = () => {
   const savedChats = localStorage.getItem("saved-chats");
 
   // Apply light mode as the default theme
+  displayRandomQuestions();
   document.body.classList.add("light_mode");
   toggleThemeButton.innerText = "dark_mode"; // Set button to allow toggling to dark mode
 
