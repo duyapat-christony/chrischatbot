@@ -363,7 +363,7 @@ body.hide-header .header {
 
 .message.outgoing {
   background: var(--secondary-color);
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   padding: 1rem 1rem 1rem 0;
   border-radius: 0 2rem 2rem 2rem;
   width: max-content;
@@ -375,7 +375,7 @@ body.hide-header .header {
   background: var(--secondary-color);
   border-radius: 2rem 0 2rem 2rem;
   padding: 1.3rem 1rem 1.3rem 0;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
   width: max-content;
   min-width: 87%;
   max-width: 100%;
