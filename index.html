@@ -20,24 +20,80 @@
     <p class="subtitle">Got questions? I can help!</p>
 
     <!-- Suggestion list -->
-    <ul class="suggestion-list">
+    <ul class="suggestion-list"> 
       <li class="suggestion">
-        <h4 class="text">What are the math concepts I need to master in grade 7?</h4>
+        <h4 id="question1" class="text">What are the math concepts I need to master in grade 7?</h4>
         <span class="icon material-symbols-rounded">school</span>
       </li>
       <li class="suggestion">
-        <h4 class="text">What is the difference between a linear and a quadratic function?</h4>
+        <h4 id="question2" class="text">What is the difference between a linear and a quadratic function?</h4>
         <span class="icon material-symbols-rounded">function</span>
       </li>
       <li class="suggestion">
-        <h4 class="text">How do I prepare for my upcoming math exam?</h4>
+        <h4 id="question3" class="text">How do I prepare for my upcoming math exam?</h4>
         <span class="icon material-symbols-rounded">lightbulb</span>
       </li>
       <li class="suggestion">
-        <h4 class="text">How can I apply the Pythagorean theorem to real-life situations?</h4>
+        <h4 id="question4" class="text">How can I apply the Pythagorean theorem to real-life situations?</h4>
         <span class="icon material-symbols-rounded">calculate</span>
       </li>
     </ul>
+    <script>
+      const questions = {
+        question1: [
+          "What are the key math concepts I need to master in grade 7?",
+          "What are some common challenges students face in grade 7 math, and how can I overcome them?",
+          "What geometry topics are in the grade 7 math curriculum?",
+          "How does grade 7 math prepare me for more advanced topics in high school?",
+          "What strategies can help me improve my understanding of grade 7 math concepts?",
+          "What are the most important problem-solving skills I need to develop in grade 7 math?"
+        ],
+        question2: [
+          "What are the key differences between linear and quadratic functions?",
+          "How do I graph linear and quadratic functions effectively?",
+          "Can you provide real-world examples of linear and quadratic equations?",
+          "What are the defining characteristics of linear functions?",
+          "How can I identify a quadratic function from its graph or equation?",
+          "What are real-world applications for linear and quadratic functions?",
+          "How are linear and quadratic equations solved?",
+          "What are the implications of the slope in linear functions?",
+        ],
+        question3: [
+          "How can I effectively prepare for my upcoming math exam?",
+          "What study strategies are most effective for retaining math concepts?",
+          "How can I manage my time efficiently when studying for a math exam?",
+          "How can I deal with math anxiety or test stress before exams?",
+          "What types of math problems should I focus on for better exam performance?",
+          "How can I identify my weak areas in math and work to improve them before the exam?",
+          "What are some common mistakes students make in math exams, and how can I avoid them?"
+        ],
+        question4: [
+          "How can I apply the Pythagorean theorem to real-life situations and problems?",
+          "What are some practical examples of the Pythagorean theorem used in daily life?",
+          "How do I solve word problems that involve the Pythagorean theorem?",
+          "Can you explain how the Pythagorean theorem is applied in real life?",
+          "How can I use the Pythagorean theorem in sports and physical activities?",
+          "What are some common misconceptions about the Pythagorean theorem?",
+          "What other mathematical concepts are related to the Pythagorean theorem?",
+          "How can I use the Pythagorean theorem to solve 3D problems, such as finding the diagonal of a box?",
+          "How does the Pythagorean theorem apply to navigation and map reading?",
+          "In what ways does the Pythagorean theorem extend to non-right triangles?"
+        ]
+      };
+
+      function displayRandomQuestions() {
+        for (const [key, value] of Object.entries(questions)) {
+          const randomIndex = Math.floor(Math.random() * value.length);
+          const randomQuestion = value[randomIndex];
+    
+          // Display each random question in its corresponding element
+          document.getElementById(key).innerText = randomQuestion;
+        }
+      }
+    
+      // Call the function to display random questions on page load
+      window.onload = displayRandomQuestions;
+    </script>
   </header>
 
   <!-- Chat List / Container -->
