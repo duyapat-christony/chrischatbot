@@ -151,12 +151,13 @@ toggleThemeButton.addEventListener("click", () => {
 // Delete all chats from local storage when button is clicked
 deleteChatButton.addEventListener("click", () => {
   Swal.fire({
-    title: 'Are you sure?',
-    text: "Do you want to delete all the chats?",
+    title: 'Delete chats?',
+    text: "Are you sure you want to delete all chats?",
     icon: 'warning',
+    reverseButtons: true,
     showCancelButton: true,
-    confirmButtonText: 'Yes, delete it!',
-    cancelButtonText: 'No, keep them',
+    confirmButtonText: 'Delete',
+    cancelButtonText: 'Cancel',
   }).then((result) => {
     if (result.isConfirmed) {
       localStorage.removeItem("saved-chats");
