@@ -1,147 +1,305 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gemini Chatbot</title>
-  <!-- Linking Google Fonts For Icons -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <header class="header">
-    <!-- Header Greetings -->
-    <!--
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gemini Chatbot</title>
+    <!-- Linking Google Fonts For Icons -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <header class="header">
+      <!-- Header Greetings -->
+      <!--
     <h1 class="title">Hello, there</h1>
     <p class="subtitle">How can I help you today?</p>
     -->
-    <h1 class="title">Got questions?</h1>
-    <p class="subtitle">I can help! <span id="icon5"></span></p>
+      <h1 class="title">Got questions?</h1>
+      <p class="subtitle">I can help! <span id="icon5"></span></p>
 
-    <!-- Suggestion list -->
-    <ul class="suggestion-list"> 
-      <li class="suggestion">
-        <h4 id="question1" class="text"></h4>
-        <span id="icon1" class="icon material-symbols-rounded"></span>
-      </li>
-      <li class="suggestion">
-        <h4 id="question2" class="text"></h4>
-        <span id="icon2" class="icon material-symbols-rounded"></span>
-      </li>
-      <li class="suggestion">
-        <h4 id="question3" class="text"></h4>
-        <span id="icon3" class="icon material-symbols-rounded"></span>
-      </li>
-      <li class="suggestion">
-        <h4 id="question4" class="text"></h4>
-        <span id="icon4" class="icon material-symbols-rounded"></span>
-      </li>
-    </ul>
-    <script>
-      const questions = {
-        question1: [
-          "What are the key math concepts I need to master in grade 7?",
-          "What are some common challenges students face in grade 7 math, and how can I overcome them?",
-          "What geometry topics are in the grade 7 math curriculum?",
-          "How does grade 7 math prepare me for more advanced topics in high school?",
-          "What strategies can help me improve my understanding of grade 7 math concepts?",
-          "What are the most important problem-solving skills I need to develop in grade 7 math?",
-          "Tell me about famous mathematicians and their contributions.",
-          "What is the difference between integers and rational numbers?",
-          "Can you give me some practice problems on solving for variables?",
-          "What is the difference between a factor and a multiple?",
-          "Explain the concept of absolute value and give examples.",
-          "Can you make a review material on angles and their properties?",
-          "Why is it important to use order of operations when computing?",
-          "Can you explain what a variable is in math and give examples?",
-          "Can you explain the difference between perimeter, area, and volume?",
-          "How do you find the mean, median, and mode of a set of data?",
-          "Can you explain how to do operations on fractions in detail?"
-        ],
-        icon1: [
-          "book","draw","calculate","note","try","laptop","box_edit","category","two_pager","article","description","quick_reference_all","quick_reference","design_services","assignment","menu_book","photo_album","business_center","phone_iphone","package","phone_android","keyboard","smartphone","problem","lists","analytics","checkbook","dataset","cards","speaker_notes","school","architecture","function","lightbulb","receipt_long"
-        ],
-        icon2: [
-          "book","draw","calculate","note","try","laptop","box_edit","category","two_pager","article","description","quick_reference_all","quick_reference","design_services","assignment","menu_book","photo_album","business_center","phone_iphone","package","phone_android","keyboard","smartphone","problem","lists","analytics","checkbook","dataset","cards","speaker_notes","school","architecture","function","lightbulb","receipt_long"
-        ],
-        icon3: [
-          "book","draw","calculate","note","try","laptop","box_edit","category","two_pager","article","description","quick_reference_all","quick_reference","design_services","assignment","menu_book","photo_album","business_center","phone_iphone","package","phone_android","keyboard","smartphone","problem","lists","analytics","checkbook","dataset","cards","speaker_notes","school","architecture","function","lightbulb","receipt_long"
-        ],
-        icon4: [
-          "book","draw","calculate","note","try","laptop","box_edit","category","two_pager","article","description","quick_reference_all","quick_reference","design_services","assignment","menu_book","photo_album","business_center","phone_iphone","package","phone_android","keyboard","smartphone","problem","lists","analytics","checkbook","dataset","cards","speaker_notes","school","architecture","function","lightbulb","receipt_long"
-        ],
-        icon5: [
-          "🤔","😉","🤓","😊","🤗","🕵️","✍️","🫡","🧑‍🏫"
-        ],
-        question2: [
-          "What are the key differences between linear and quadratic functions?",
-          "How do I graph linear and quadratic functions effectively?",
-          "Can you provide real-world examples of linear and quadratic equations?",
-          "What are the defining characteristics of linear functions?",
-          "How can I identify a quadratic function from its graph or equation?",
-          "What are real-world applications for linear and quadratic functions?",
-          "How are linear and quadratic equations solved?",
-          "What are the implications of the slope in linear functions?",
-        ],
-        question3: [
-          "How can I effectively prepare for my upcoming math exam?",
-          "What study strategies are most effective for retaining math concepts?",
-          "How can I manage my time efficiently when studying for a math exam?",
-          "How can I deal with math anxiety or test stress before exams?",
-          "What types of math problems should I focus on for better exam performance?",
-          "How can I identify my weak areas in math and work to improve them before the exam?",
-          "What are some common mistakes students make in math exams, and how can I avoid them?"
-        ],
-        question4: [
-          "How can I apply the Pythagorean theorem to real-life situations and problems?",
-          "What are some practical examples of the Pythagorean theorem used in daily life?",
-          "How do I solve word problems that involve the Pythagorean theorem?",
-          "Can you explain how the Pythagorean theorem is applied in real life?",
-          "How can I use the Pythagorean theorem in sports and physical activities?",
-          "What are some common misconceptions about the Pythagorean theorem?",
-          "What other mathematical concepts are related to the Pythagorean theorem?",
-          "How can I use the Pythagorean theorem to solve 3D problems, such as finding the diagonal of a box?",
-          "How does the Pythagorean theorem apply to navigation and map reading?",
-          "In what ways does the Pythagorean theorem extend to non-right triangles?"
-        ]
-      };
+      <!-- Suggestion list -->
+      <ul class="suggestion-list">
+        <li class="suggestion">
+          <h4 id="question1" class="text"></h4>
+          <span id="icon1" class="icon material-symbols-rounded"></span>
+        </li>
+        <li class="suggestion">
+          <h4 id="question2" class="text"></h4>
+          <span id="icon2" class="icon material-symbols-rounded"></span>
+        </li>
+        <li class="suggestion">
+          <h4 id="question3" class="text"></h4>
+          <span id="icon3" class="icon material-symbols-rounded"></span>
+        </li>
+        <li class="suggestion">
+          <h4 id="question4" class="text"></h4>
+          <span id="icon4" class="icon material-symbols-rounded"></span>
+        </li>
+      </ul>
+      <script>
+        const questions = {
+          question1: [
+            "What are the key math concepts I need to master in grade 7?",
+            "What are some common challenges students face in grade 7 math, and how can I overcome them?",
+            "What geometry topics are in the grade 7 math curriculum?",
+            "How does grade 7 math prepare me for more advanced topics in high school?",
+            "What strategies can help me improve my understanding of grade 7 math concepts?",
+            "What are the most important problem-solving skills I need to develop in grade 7 math?",
+            "Tell me about famous mathematicians and their contributions.",
+            "What is the difference between integers and rational numbers?",
+            "Can you give me some practice problems on solving for variables?",
+            "What is the difference between a factor and a multiple?",
+            "Explain the concept of absolute value and give examples.",
+            "Can you make a review material on angles and their properties?",
+            "Why is it important to use order of operations when computing?",
+            "Can you explain what a variable is in math and give examples?",
+            "Can you explain the difference between perimeter, area, and volume?",
+            "How do you find the mean, median, and mode of a set of data?",
+            "Can you explain how to do operations on fractions in detail?",
+          ],
+          icon1: [
+            "book",
+            "draw",
+            "calculate",
+            "note",
+            "try",
+            "laptop",
+            "box_edit",
+            "category",
+            "two_pager",
+            "article",
+            "description",
+            "quick_reference_all",
+            "quick_reference",
+            "design_services",
+            "assignment",
+            "menu_book",
+            "photo_album",
+            "business_center",
+            "phone_iphone",
+            "package",
+            "phone_android",
+            "keyboard",
+            "smartphone",
+            "problem",
+            "lists",
+            "analytics",
+            "checkbook",
+            "dataset",
+            "cards",
+            "speaker_notes",
+            "school",
+            "architecture",
+            "function",
+            "lightbulb",
+            "receipt_long",
+          ],
+          icon2: [
+            "book",
+            "draw",
+            "calculate",
+            "note",
+            "try",
+            "laptop",
+            "box_edit",
+            "category",
+            "two_pager",
+            "article",
+            "description",
+            "quick_reference_all",
+            "quick_reference",
+            "design_services",
+            "assignment",
+            "menu_book",
+            "photo_album",
+            "business_center",
+            "phone_iphone",
+            "package",
+            "phone_android",
+            "keyboard",
+            "smartphone",
+            "problem",
+            "lists",
+            "analytics",
+            "checkbook",
+            "dataset",
+            "cards",
+            "speaker_notes",
+            "school",
+            "architecture",
+            "function",
+            "lightbulb",
+            "receipt_long",
+          ],
+          icon3: [
+            "book",
+            "draw",
+            "calculate",
+            "note",
+            "try",
+            "laptop",
+            "box_edit",
+            "category",
+            "two_pager",
+            "article",
+            "description",
+            "quick_reference_all",
+            "quick_reference",
+            "design_services",
+            "assignment",
+            "menu_book",
+            "photo_album",
+            "business_center",
+            "phone_iphone",
+            "package",
+            "phone_android",
+            "keyboard",
+            "smartphone",
+            "problem",
+            "lists",
+            "analytics",
+            "checkbook",
+            "dataset",
+            "cards",
+            "speaker_notes",
+            "school",
+            "architecture",
+            "function",
+            "lightbulb",
+            "receipt_long",
+          ],
+          icon4: [
+            "book",
+            "draw",
+            "calculate",
+            "note",
+            "try",
+            "laptop",
+            "box_edit",
+            "category",
+            "two_pager",
+            "article",
+            "description",
+            "quick_reference_all",
+            "quick_reference",
+            "design_services",
+            "assignment",
+            "menu_book",
+            "photo_album",
+            "business_center",
+            "phone_iphone",
+            "package",
+            "phone_android",
+            "keyboard",
+            "smartphone",
+            "problem",
+            "lists",
+            "analytics",
+            "checkbook",
+            "dataset",
+            "cards",
+            "speaker_notes",
+            "school",
+            "architecture",
+            "function",
+            "lightbulb",
+            "receipt_long",
+          ],
+          icon5: ["🤔", "😉", "🤓", "😊", "🤗", "🕵️", "✍️", "🫡", "🧑‍🏫"],
+          question2: [
+            "What are the key differences between linear and quadratic functions?",
+            "How do I graph linear and quadratic functions effectively?",
+            "Can you provide real-world examples of linear and quadratic equations?",
+            "What are the defining characteristics of linear functions?",
+            "How can I identify a quadratic function from its graph or equation?",
+            "What are real-world applications for linear and quadratic functions?",
+            "How are linear and quadratic equations solved?",
+            "What are the implications of the slope in linear functions?",
+          ],
+          question3: [
+            "How can I effectively prepare for my upcoming math exam?",
+            "What study strategies are most effective for retaining math concepts?",
+            "How can I manage my time efficiently when studying for a math exam?",
+            "How can I deal with math anxiety or test stress before exams?",
+            "What types of math problems should I focus on for better exam performance?",
+            "How can I identify my weak areas in math and work to improve them before the exam?",
+            "What are some common mistakes students make in math exams, and how can I avoid them?",
+          ],
+          question4: [
+            "How can I apply the Pythagorean theorem to real-life situations and problems?",
+            "What are some practical examples of the Pythagorean theorem used in daily life?",
+            "How do I solve word problems that involve the Pythagorean theorem?",
+            "Can you explain how the Pythagorean theorem is applied in real life?",
+            "How can I use the Pythagorean theorem in sports and physical activities?",
+            "What are some common misconceptions about the Pythagorean theorem?",
+            "What other mathematical concepts are related to the Pythagorean theorem?",
+            "How can I use the Pythagorean theorem to solve 3D problems, such as finding the diagonal of a box?",
+            "How does the Pythagorean theorem apply to navigation and map reading?",
+            "In what ways does the Pythagorean theorem extend to non-right triangles?",
+          ],
+        };
 
-      function displayRandomQuestions() {
-        for (const [key, value] of Object.entries(questions)) {
-          const randomIndex = Math.floor(Math.random() * value.length);
-          const randomQuestion = value[randomIndex];
-    
-          // Display each random question in its corresponding element
-          document.getElementById(key).innerText = randomQuestion;
+        function displayRandomQuestions() {
+          for (const [key, value] of Object.entries(questions)) {
+            const randomIndex = Math.floor(Math.random() * value.length);
+            const randomQuestion = value[randomIndex];
+
+            // Display each random question in its corresponding element
+            document.getElementById(key).innerText = randomQuestion;
+          }
         }
-      }
-    
-      // Call the function to display random questions on page load
-      window.onload = displayRandomQuestions;
-    </script>
-  </header>
 
-  <!-- Chat List / Container -->
-  <div class="chat-list"></div>
+        // Call the function to display random questions on page load
+        window.onload = displayRandomQuestions;
+      </script>
+    </header>
 
-  <!-- Typing Area -->
-  <div class="typing-area">
-    <form action="#" class="typing-form">
-      <div class="input-wrapper">
-        <input type="text" placeholder="Ask me your question" class="typing-input" required />
-        <button id="send-message-button" class="icon material-symbols-rounded">send</button>
-      </div>
-      <div class="action-buttons">
-        <span id="theme-toggle-button" class="icon material-symbols-rounded">light_mode</span>
-        <span id="delete-chat-button" class="icon material-symbols-rounded">delete</span>
-      </div>
-    </form>
-    <p class="disclaimer-text">
-      This chatbot is powered by Gemini. It may provide inaccurate info, so verify its responses.
-    </p>
-  </div>
+    <!-- Chat List / Container -->
+    <div class="chat-list"></div>
 
-  <script src="script.js"></script>
-</body>
+    <!-- Typing Area -->
+    <div class="typing-area">
+      <form action="#" class="typing-form">
+        <div class="input-wrapper">
+          <input
+            type="text"
+            placeholder="Ask me your question"
+            class="typing-input"
+            required
+          />
+          <button
+            id="send-message-button"
+            class="icon material-symbols-rounded"
+          >
+            send
+          </button>
+        </div>
+        <div class="action-buttons">
+          <span id="theme-toggle-button" class="icon material-symbols-rounded"
+            >light_mode</span
+          >
+          <span id="delete-chat-button" class="icon material-symbols-rounded"
+            >delete</span
+          >
+        </div>
+      </form>
+      <p class="disclaimer-text">
+        This chatbot is powered by Gemini. It may provide inaccurate info, so
+        verify its responses. Read
+        <a
+          href="https://duyapat-christony.github.io/for-students/chatbot/#guideline-on-the-use-of-the-chatbot"
+          target="_blank"
+          >guidelines</a
+        >
+        on using the chatbot.
+      </p>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
 </html>
