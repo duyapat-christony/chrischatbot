@@ -1,5 +1,5 @@
 /* Import Google Font - Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 
 * {
   margin: 0;
@@ -10,9 +10,9 @@
 
 :root {
   /* Dark mode colors */
-  --text-color: #E3E3E3;
+  --text-color: #e3e3e3;
   --subheading-color: #828282;
-  --placeholder-color: #A6A6A6;
+  --placeholder-color: #a6a6a6;
   --primary-color: #242424;
   --secondary-color: #383838;
   --secondary-hover-color: #444;
@@ -21,18 +21,19 @@
 .light_mode {
   /* Light mode colors */
   --text-color: #222;
-  --subheading-color: #A0A0A0;
-  --placeholder-color: #6C6C6C;
-  --primary-color: #FFF;
-  --secondary-color: #E9EEF6;
-  --secondary-hover-color: #DBE1EA;
+  --subheading-color: #a0a0a0;
+  --placeholder-color: #6c6c6c;
+  --primary-color: #fff;
+  --secondary-color: #e9eef6;
+  --secondary-hover-color: #dbe1ea;
 }
 
 body {
   background: var(--primary-color);
 }
 
-.header, .typing-form {
+.header,
+.typing-form {
   margin: 0 auto;
   max-width: 980px;
 }
@@ -174,7 +175,7 @@ body.hide-header .header {
   visibility: hidden;
 }
 
-.chat-list .message:not(.loading, .error):hover .icon:not(.hide){
+.chat-list .message:not(.loading, .error):hover .icon:not(.hide) {
   visibility: visible;
 }
 
@@ -382,7 +383,12 @@ body.hide-header .header {
   margin-right: auto;
 }
 
-.chat-list, .message, .message-content, .message.incoming, .message.outgoing, .text {
+.chat-list,
+.message,
+.message-content,
+.message.incoming,
+.message.outgoing,
+.text {
   overflow-wrap: break-word;
   word-wrap: break-word;
 }
