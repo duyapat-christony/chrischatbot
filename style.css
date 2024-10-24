@@ -353,6 +353,9 @@ body.hide-header .header {
   .typing-form .typing-input {
     font-size: 0.85rem;
   }
+  .typing-form .typing-input::placeholder {
+    font-size: 0.9rem;
+  }
 }
 
 /*customize the message.incoming and .outgoing*/
