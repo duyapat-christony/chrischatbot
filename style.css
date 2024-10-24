@@ -354,7 +354,7 @@ body.hide-header .header {
     font-size: 0.85rem;
   }
   .typing-form .typing-input::placeholder {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
   }
 }
 
