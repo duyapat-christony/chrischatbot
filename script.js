@@ -43,6 +43,7 @@ const showTypingEffect = (htmlContent, targetElement) => {
   const typewriter = new Typewriter(targetElement, {
     loop: false, // No looping
     delay: 10, // Typing speed in milliseconds
+    cursor: "|", // Display cursor character
     onCreateCursor: () => "", // Override the cursor creation to avoid default behavior
   });
 
@@ -85,7 +86,9 @@ const generateAPIResponse = async (incomingMessageDiv) => {
     if (!response.ok) throw new Error(data.error.message);
 
     // Get the API response text and remove asterisks from it
-    const apiResponse = marked.parse(data?.candidates[0].content.parts[0].text);
+    const apiResponse = data?.candidates[0].content.parts[0].text
+      .replace(/\*\*(.*?)\*\*/g, "$1") // Remove double asterisks and retain inner text
+      .replace(/\$(.*?)\$/g, "$1"); // Remove dollar signs and retain inner text
     showTypingEffect(apiResponse, textElement, incomingMessageDiv); // Show typing effect
   } catch (error) {
     // Handle error
@@ -101,14 +104,12 @@ const generateAPIResponse = async (incomingMessageDiv) => {
 const showLoadingAnimation = () => {
   const html = `<div class="message-content">
                   <img class="avatar" src="images/gemini.svg" alt="Gemini avatar">
-                    <div class="api-generated-response">
-                      <p class="text"></p>
-                    </div>
-                    <div class="loading-indicator">
-                      <div class="loading-bar"></div>
-                      <div class="loading-bar"></div>
-                      <div class="loading-bar"></div>
-                    </div>
+                  <p class="text"></p>
+                  <div class="loading-indicator">
+                    <div class="loading-bar"></div>
+                    <div class="loading-bar"></div>
+                    <div class="loading-bar"></div>
+                  </div>
                 </div>
                 <span onClick="copyMessage(this)" class="icon material-symbols-rounded" style="float: right;">content_copy</span>`;
 
