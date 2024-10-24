@@ -218,7 +218,7 @@ body.hide-header .header {
 }
 
 .typing-area {
-  position: fixed;
+  position: absolute;
   width: 100%;
   left: 0;
   bottom: 0;
@@ -238,6 +238,11 @@ body.hide-header .header {
   position: relative;
 }
 
+.typing-input {
+  resize: none;
+  overflow: hidden;
+}
+
 .typing-form .typing-input {
   height: 100%;
   width: 100%;
@@ -247,7 +252,7 @@ body.hide-header .header {
   font-size: 1rem;
   color: var(--text-color);
   padding: 1.1rem 4rem 1.1rem 1.5rem;
-  border-radius: 100px;
+  border-radius: 2rem;
   background: var(--secondary-color);
 }
 

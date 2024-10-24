@@ -1,5 +1,6 @@
 const typingForm = document.querySelector(".typing-form");
 const chatContainer = document.querySelector(".chat-list");
+const typingInput = typingForm.querySelector(".typing-input");
 const suggestions = document.querySelectorAll(".suggestion");
 const toggleThemeButton = document.querySelector("#theme-toggle-button");
 const deleteChatButton = document.querySelector("#delete-chat-button");
@@ -42,7 +43,7 @@ const showTypingEffect = (htmlContent, targetElement) => {
   // Create a new Typewriter instance on the target element
   const typewriter = new Typewriter(targetElement, {
     loop: false, // No looping
-    delay: 10, // Typing speed in milliseconds
+    delay: 1, // Typing speed in milliseconds
     cursor: "|", // Display cursor character
     onCreateCursor: () => "", // Override the cursor creation to avoid default behavior
   });
@@ -129,6 +130,20 @@ const copyMessage = (copyButton) => {
   setTimeout(() => (copyButton.innerText = "content_copy"), 1000); // Revert icon after 1 second
 };
 
+// Adjust the height of the textarea dynamically
+typingInput.addEventListener("input", () => {
+  typingInput.style.height = "auto";
+  typingInput.style.height = typingInput.scrollHeight + "px";
+});
+
+// Handle "Shift + Enter" for new lines and "Enter" for sending messages
+typingInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    handleOutgoingChat();
+  }
+});
+
 // Handle sending outgoing chat messages
 const handleOutgoingChat = () => {
   userMessage =
@@ -147,6 +162,7 @@ const handleOutgoingChat = () => {
   chatContainer.appendChild(outgoingMessageDiv);
 
   typingForm.reset(); // Clear input field
+  typingInput.style.height = "auto";
   document.body.classList.add("hide-header");
   chatContainer.scrollTo(0, chatContainer.scrollHeight); // Scroll to the bottom
   setTimeout(showLoadingAnimation, 500); // Show loading animation after a delay
