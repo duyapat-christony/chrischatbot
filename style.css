@@ -121,7 +121,6 @@ body.hide-header .header {
 .chat-list .message .message-content {
   display: flex;
   gap: 1rem;
-  align-items: center;
 }
 
 .chat-list .message .text {
@@ -391,4 +390,9 @@ body.hide-header .header {
 .text {
   overflow-wrap: break-word;
   word-wrap: break-word;
+}
+
+.message.incoming .message-content .api-generated-response {
+  display: flex;
+  flex-direction: column;
 }
