@@ -218,7 +218,7 @@ body.hide-header .header {
 }
 
 .typing-area {
-  position: absolute;
+  position: sticky;
   width: 100%;
   left: 0;
   bottom: 0;
@@ -284,7 +284,7 @@ body.hide-header .header {
 }
 
 .typing-form #send-message-button {
-  position: relative;
+  position: absolute;
   right: 0;
   outline: none;
   border: none;
@@ -354,7 +354,7 @@ body.hide-header .header {
     font-size: 0.85rem;
   }
   .typing-form .typing-input::placeholder {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
   }
 }
 
