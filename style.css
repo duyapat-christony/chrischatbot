@@ -217,7 +217,7 @@ body.hide-header .header {
 }
 
 .typing-area {
-  position: absolute;
+  position: fixed;
   width: 100%;
   left: 0;
   bottom: 0;
@@ -245,6 +245,7 @@ body.hide-header .header {
 .typing-form .typing-input {
   height: 100%;
   width: 100%;
+  max-height: 6rem;
   border: none;
   outline: none;
   resize: none;
