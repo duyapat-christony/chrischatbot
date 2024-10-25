@@ -109,7 +109,6 @@ body.hide-header .header {
   height: 42px;
   display: flex;
   font-size: 1.3rem;
-  margin-top: 2.5rem;
   align-self: flex-end;
   align-items: center;
   border-radius: 50%;
@@ -218,7 +217,7 @@ body.hide-header .header {
 }
 
 .typing-area {
-  position: sticky;
+  position: absolute;
   width: 100%;
   left: 0;
   bottom: 0;
@@ -355,6 +354,9 @@ body.hide-header .header {
   }
   .typing-form .typing-input::placeholder {
     font-size: 0.8rem;
+  }
+  .suggestion-list h4 {
+    font-size: 1rem;
   }
 }
 

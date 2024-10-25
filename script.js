@@ -188,8 +188,14 @@ deleteChatButton.addEventListener("click", () => {
   }).then((result) => {
     if (result.isConfirmed) {
       localStorage.removeItem("saved-chats");
-      loadDataFromLocalstorage();
-      Swal.fire("Deleted!", "All your chats have been deleted.", "success");
+      // Reload the page to restart the chatbot and restore the initial state
+      Swal.fire(
+        "Deleted!",
+        "All your chats have been deleted.",
+        "success"
+      ).then(() => {
+        window.location.reload(); // Refresh the page
+      });
     }
   });
 });
