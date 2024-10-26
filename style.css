@@ -77,10 +77,9 @@ body.hide-header .header {
   gap: 1.25rem;
   margin-top: 2.8rem;
   flex-wrap: wrap;
+  scroll-snap-type: x mandatory;
   scrollbar-width: none;
   justify-content: center;
-  overflow-y: scroll;
-  max-height: 60vh;
 }
 
 .suggestion-list .suggestion {
