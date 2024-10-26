@@ -358,7 +358,7 @@ body.hide-header .header {
   }
 }
 
-@media (max-width: 450px) {
+@media (max-width: 500px) {
   .suggestion-list .suggestion {
     width: 100%;
     display: flex;
@@ -370,9 +370,15 @@ body.hide-header .header {
     font-size: 14px;
   }
   .suggestion-list .suggestion .icon {
-    margin: auto;
+    margin-left: auto;
     background-color: transparent;
-    text-align: right;
+  }
+  .suggestion-list {
+    margin-top: 1.5rem;
+    gap: 0.5rem;
+  }
+  .header {
+    margin-top: 0.5rem;
   }
 }
 
