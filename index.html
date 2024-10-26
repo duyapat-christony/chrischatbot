@@ -20,8 +20,8 @@
     <h1 class="title">Hello, there</h1>
     <p class="subtitle">How can I help you today?</p>
     -->
-      <h1 class="title">Got questions?</h1>
-      <p class="subtitle">I can help! <span id="icon5"></span></p>
+      <h1 class="title dancing_text">Got questions?</h1>
+      <p class="subtitle dancing_text">I can help! <span id="icon5"></span></p>
 
       <!-- Suggestion list -->
       <ul class="suggestion-list">
@@ -43,6 +43,20 @@
         </li>
       </ul>
       <script>
+        const colors = [
+          "#FF0000", // Red
+          "#0000FF", // Blue
+          "#00dd00", // Lime Green
+          "#FF0080", // Hot Pink
+          "#8A2BE2", // Blue Violet
+          "#FFA600", // Orange
+          "#00CED1", // Dark Turquoise
+          "#FF1493", // Deep Pink
+          "#8B008B", // Dark Magenta
+          "#FF8C00", // Dark Orange
+          "#FFD000",
+        ];
+
         const questions = {
           question1: [
             "What are the key math concepts I need to master in grade 7?",
@@ -252,6 +266,13 @@
 
             // Display each random question in its corresponding element
             document.getElementById(key).innerText = randomQuestion;
+          }
+          // Assign random colors to each icon
+          for (let i = 1; i <= 4; i++) {
+            const iconElement = document.getElementById(`icon${i}`);
+            const randomColor =
+              colors[Math.floor(Math.random() * colors.length)];
+            iconElement.style.color = randomColor;
           }
         }
 
