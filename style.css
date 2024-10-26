@@ -363,22 +363,24 @@ body.hide-header .header {
     width: 100%;
     display: flex;
     flex-direction: row;
-    gap: 1rem;
+    gap: 0.5rem;
     align-items: center;
   }
   .suggestion-list .suggestion h4 {
     font-size: 14px;
   }
   .suggestion-list .suggestion .icon {
-    margin-left: auto;
+    display: contents;
+    margin: auto;
     background-color: transparent;
+    justify-content: right;
   }
   .suggestion-list {
-    margin-top: 1.5rem;
-    gap: 0.5rem;
+    margin-top: 1.7rem;
+    gap: 0.7rem;
   }
   .header {
-    margin-top: 0.5rem;
+    margin-top: 0;
   }
 }
 
