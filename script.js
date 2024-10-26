@@ -43,7 +43,7 @@ const showTypingEffect = (htmlContent, targetElement) => {
   // Create a new Typewriter instance on the target element
   const typewriter = new Typewriter(targetElement, {
     loop: false, // No looping
-    delay: 1, // Typing speed in milliseconds
+    delay: 0, // Typing speed in milliseconds
     cursor: "|", // Display cursor character
     onCreateCursor: () => "", // Override the cursor creation to avoid default behavior
   });
