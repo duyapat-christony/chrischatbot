@@ -364,7 +364,7 @@ body.hide-header .header {
     width: 100%;
     display: flex;
     flex-direction: row;
-    gap: 0.5rem;
+    gap: 1rem;
     align-items: center;
   }
   .suggestion-list .suggestion h4 {
