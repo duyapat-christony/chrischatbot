@@ -9,16 +9,6 @@
 }
 
 :root {
-  /* Dark mode colors */
-  --text-color: #e3e3e3;
-  --subheading-color: #828282;
-  --placeholder-color: #a6a6a6;
-  --primary-color: #242424;
-  --secondary-color: #383838;
-  --secondary-hover-color: #444;
-}
-
-.light_mode {
   /* Light mode colors */
   --text-color: #222;
   --subheading-color: #a0a0a0;
@@ -26,6 +16,16 @@
   --primary-color: #fff;
   --secondary-color: #e9eef6;
   --secondary-hover-color: #dbe1ea;
+}
+
+.dark_mode {
+  /* Dark mode colors */
+  --text-color: #e3e3e3;
+  --subheading-color: #828282;
+  --placeholder-color: #a6a6a6;
+  --primary-color: #242424;
+  --secondary-color: #383838;
+  --secondary-hover-color: #444;
 }
 
 body {
