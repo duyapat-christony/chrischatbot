@@ -387,7 +387,7 @@ body.hide-header .header {
 
 /*customize the message.incoming and .outgoing*/
 .chat-list {
-  padding: 0 0.5rem 12rem 0.5rem;
+  padding: 0 0.5rem 0rem 0.5rem;
   max-height: 100vh;
   overflow-y: auto;
   scrollbar-width: none;
@@ -395,6 +395,12 @@ body.hide-header .header {
   width: 100%;
   max-width: 980px;
   margin: 0 auto;
+}
+
+.chat-list::after {
+  content: ""; /* Required to make the pseudo-element appear */
+  display: block; /* Allows you to apply spacing with margin */
+  margin-bottom: 10rem; /* Adjust this value for the desired space */
 }
 
 .message.outgoing {
