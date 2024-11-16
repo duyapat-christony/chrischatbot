@@ -245,6 +245,7 @@ body.hide-header .header {
   max-height: 6rem;
   border: none;
   outline: none;
+  overflow: hidden;
   resize: none;
   scrollbar-width: none;
   font-size: 1rem;
@@ -256,6 +257,8 @@ body.hide-header .header {
 
 .typing-form .typing-input:focus {
   background: var(--secondary-hover-color);
+  border-radius: 0.8rem;
+  overflow-y: auto;
 }
 
 .typing-form .typing-input::placeholder {
