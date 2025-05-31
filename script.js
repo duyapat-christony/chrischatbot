@@ -38,32 +38,6 @@ const createMessageElement = (content, ...classes) => {
   return div;
 };
 
-// Use Typewriter.js for typing effect
-const showTypingEffect = (htmlContent, targetElement) => {
-  // Create a new Typewriter instance on the target element
-  const typewriter = new Typewriter(targetElement, {
-    loop: false, // No looping
-    delay: 0, // Typing speed in milliseconds
-    cursor: "|", // Display cursor character
-    onCreateCursor: () => "", // Override the cursor creation to avoid default behavior
-  });
-
-  // Type out the entire HTML content
-  typewriter
-    .typeString(htmlContent) // Insert HTML string here
-    .callFunction(() => {
-      // Remove the cursor after the typing animation is done
-      const cursorElement = targetElement.querySelector(".Typewriter__cursor");
-      if (cursorElement) {
-        cursorElement.remove(); // Remove cursor element
-      }
-      isResponseGenerating = false;
-      localStorage.setItem("saved-chats", chatContainer.innerHTML); // Save chats to local storage
-      chatContainer.scrollTo(0, chatContainer.scrollHeight); // Scroll to the bottom
-    })
-    .start(); // Start typing
-};
-
 // Fetch response from the API based on user message
 const generateAPIResponse = async (incomingMessageDiv) => {
   const textElement = incomingMessageDiv.querySelector(".text"); // Getting text element
@@ -90,7 +64,10 @@ const generateAPIResponse = async (incomingMessageDiv) => {
     const apiResponse = data?.candidates[0].content.parts[0].text
       .replace(/\*\*(.*?)\*\*/g, "$1") // Remove double asterisks and retain inner text
       .replace(/\$(.*?)\$/g, "$1"); // Remove dollar signs and retain inner text
-    showTypingEffect(apiResponse, textElement, incomingMessageDiv); // Show typing effect
+    textElement.innerHTML = apiResponse;
+    isResponseGenerating = false;
+    localStorage.setItem("saved-chats", chatContainer.innerHTML);
+    chatContainer.scrollTo(0, chatContainer.scrollHeight);
   } catch (error) {
     // Handle error
     isResponseGenerating = false;
