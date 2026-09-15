@@ -36,9 +36,7 @@ exports.handler = async function (event) {
     }
 
     const message =
-      typeof requestBody.message === "string"
-        ? requestBody.message.trim()
-        : "";
+      typeof requestBody.message === "string" ? requestBody.message.trim() : "";
 
     if (!message) {
       return {
@@ -71,7 +69,7 @@ exports.handler = async function (event) {
       };
     }
 
-    const model = "gemini-2.5-flash-lite";
+    const model = "gemini-3.5-flash-lite";
     const url =
       `https://generativelanguage.googleapis.com/v1beta/models/` +
       `${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
