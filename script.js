@@ -9,10 +9,8 @@ const deleteChatButton = document.querySelector("#delete-chat-button");
 let userMessage = null;
 let isResponseGenerating = false;
 
-// API configuration
-const API_KEY = "AIzaSyDuqgLLOnavktMt5h_E1IdljSSHPBPRggs"; // Your API key here
-const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash-lite:generateContent?key=${API_KEY}`;
-// const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${API_KEY}`;
+// Netlify Endpoint (Replaces direct Google API config)
+const NETLIFY_FUNCTION_URL = "/.netlify/functions/gemini";
 
 // Load theme and chat data from local storage on page load
 const loadDataFromLocalstorage = () => {
@@ -38,32 +36,26 @@ const createMessageElement = (content, ...classes) => {
   return div;
 };
 
-// Fetch response from the API based on user message
+// Fetch response from the Netlify Serverless Function based on user message
 const generateAPIResponse = async (incomingMessageDiv) => {
   const textElement = incomingMessageDiv.querySelector(".text"); // Getting text element
 
   try {
-    // Send a POST request to the API with the user's message
-    const response = await fetch(API_URL, {
+    // Send a POST request to your secure Netlify function
+    const response = await fetch(NETLIFY_FUNCTION_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [
-          {
-            role: "user",
-            parts: [{ text: userMessage }],
-          },
-        ],
-      }),
+      body: JSON.stringify({ message: userMessage }),
     });
 
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error.message);
+    if (!response.ok) throw new Error(data.error || "Failed to fetch response");
 
     // Get the API response text and remove asterisks from it
     const apiResponse = data?.candidates[0].content.parts[0].text
       .replace(/\*\*(.*?)\*\*/g, "$1") // Remove double asterisks and retain inner text
       .replace(/\$(.*?)\$/g, "$1"); // Remove dollar signs and retain inner text
+
     textElement.innerHTML = apiResponse;
     isResponseGenerating = false;
     localStorage.setItem("saved-chats", chatContainer.innerHTML);
@@ -169,7 +161,7 @@ deleteChatButton.addEventListener("click", () => {
       Swal.fire(
         "Deleted!",
         "All your chats have been deleted.",
-        "success"
+        "success",
       ).then(() => {
         window.location.reload(); // Refresh the page
       });
