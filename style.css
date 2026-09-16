@@ -521,3 +521,14 @@ body.hide-header .header {
 .manual-copy-close:hover {
   background: #0b5ed7;
 }
+
+.chat-list {
+  scroll-padding-top: 16px;
+  scroll-behavior: smooth;
+}
+
+.chat-list .message .text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.7;
+}

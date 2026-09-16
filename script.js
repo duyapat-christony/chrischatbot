@@ -66,6 +66,17 @@ const scrollToBottom = () => {
   chatContainer.scrollTo(0, chatContainer.scrollHeight);
 };
 
+const scrollToMessageStart = (messageElement) => {
+  if (!chatContainer || !messageElement) return;
+
+  const messageTop = messageElement.offsetTop;
+
+  chatContainer.scrollTo({
+    top: Math.max(0, messageTop - 12),
+    behavior: "smooth",
+  });
+};
+
 const saveVisibleChats = () => {
   if (!chatContainer) return;
   localStorage.setItem("saved-chats", chatContainer.innerHTML);
@@ -142,6 +153,7 @@ const generateAPIResponse = async (incomingMessageDiv, currentMessage) => {
     }
 
     const cleanedResponse = cleanChatbotResponse(data.reply);
+
     textElement.textContent = cleanedResponse;
 
     conversationHistory.push({
@@ -160,7 +172,14 @@ const generateAPIResponse = async (incomingMessageDiv, currentMessage) => {
 
     saveConversationHistory();
     saveVisibleChats();
-    scrollToBottom();
+
+    /*
+     * Show the beginning of the chatbot's response.
+     * Do not scroll to the bottom here.
+     */
+    requestAnimationFrame(() => {
+      scrollToMessageStart(incomingMessageDiv);
+    });
   } catch (error) {
     console.error("Chatbot error:", error);
 
@@ -168,10 +187,18 @@ const generateAPIResponse = async (incomingMessageDiv, currentMessage) => {
       error.message || "Unable to connect to the chatbot.";
 
     incomingMessageDiv.classList.add("error");
+
+    requestAnimationFrame(() => {
+      scrollToMessageStart(incomingMessageDiv);
+    });
   } finally {
     isResponseGenerating = false;
     incomingMessageDiv.classList.remove("loading");
-    scrollToBottom();
+
+    /*
+     * Do not call scrollToBottom() here.
+     * Calling it here causes long responses to jump to the end.
+     */
   }
 };
 
@@ -190,7 +217,11 @@ const showLoadingAnimation = (currentMessage) => {
   const incomingMessageDiv = createMessageElement(html, "incoming", "loading");
 
   chatContainer.appendChild(incomingMessageDiv);
-  scrollToBottom();
+
+  requestAnimationFrame(() => {
+    scrollToMessageStart(incomingMessageDiv);
+  });
+
   generateAPIResponse(incomingMessageDiv, currentMessage);
 };
 
