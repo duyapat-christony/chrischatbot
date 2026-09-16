@@ -6,65 +6,59 @@ const toggleThemeButton = document.querySelector("#theme-toggle-button");
 const deleteChatButton = document.querySelector("#delete-chat-button");
 
 const NETLIFY_FUNCTION_URL = "/.netlify/functions/gemini";
+const MAX_HISTORY_MESSAGES = 20;
 
 let userMessage = "";
 let isResponseGenerating = false;
+let conversationHistory = [];
 
-// Convert common Markdown and LaTeX into readable plain text.
+try {
+  const savedHistory = JSON.parse(localStorage.getItem("chat-history") || "[]");
+
+  conversationHistory = Array.isArray(savedHistory) ? savedHistory : [];
+} catch (error) {
+  console.error("Could not load chat history:", error);
+  conversationHistory = [];
+}
+
+// Convert occasional Markdown and LaTeX into readable plain text.
 const cleanChatbotResponse = (responseText) => {
   if (typeof responseText !== "string") return "";
 
-  return (
-    responseText
-      // Convert common LaTeX fractions before removing braces.
-      .replace(/\\frac\{([^{}]+)\}\{([^{}]+)\}/g, "($1) / ($2)")
-
-      // Convert square roots and common mathematical commands.
-      .replace(/\\sqrt\{([^{}]+)\}/g, "√($1)")
-      .replace(/\\pi\b/g, "π")
-      .replace(/\\times\b/g, "×")
-      .replace(/\\cdot\b/g, "·")
-      .replace(/\\div\b/g, "÷")
-      .replace(/\\pm\b/g, "±")
-      .replace(/\\leq\b/g, "≤")
-      .replace(/\\geq\b/g, "≥")
-      .replace(/\\neq\b/g, "≠")
-      .replace(/\\approx\b/g, "≈")
-      .replace(/\\infty\b/g, "∞")
-      .replace(/\\degree\b/g, "°")
-
-      // Convert frequently used exponents to Unicode superscripts.
-      .replace(/\^\{?2\}?/g, "²")
-      .replace(/\^\{?3\}?/g, "³")
-
-      // Remove LaTeX display and inline delimiters.
-      .replace(/\\\[/g, "")
-      .replace(/\\\]/g, "")
-      .replace(/\\\(/g, "")
-      .replace(/\\\)/g, "")
-      .replace(/\$\$/g, "")
-      .replace(/\$/g, "")
-
-      // Remove Markdown headings, bold, and italic markers.
-      .replace(/^#{1,6}\s+/gm, "")
-      .replace(/\*\*(.*?)\*\*/gs, "$1")
-      .replace(/__(.*?)__/gs, "$1")
-      .replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, "$1")
-
-      // Convert Markdown list markers into readable bullets.
-      .replace(/^\s*[-*]\s+/gm, "• ")
-
-      // Remove backticks used for inline code.
-      .replace(/```[a-zA-Z]*\n?/g, "")
-      .replace(/```/g, "")
-      .replace(/`([^`]+)`/g, "$1")
-
-      // Remove common escaped braces and unnecessary trailing spaces.
-      .replace(/\\([{}])/g, "$1")
-      .replace(/[ \t]+$/gm, "")
-      .replace(/\n{3,}/g, "\n\n")
-      .trim()
-  );
+  return responseText
+    .replace(/\\frac\{([^{}]+)\}\{([^{}]+)\}/g, "($1) / ($2)")
+    .replace(/\\sqrt\{([^{}]+)\}/g, "√($1)")
+    .replace(/\\pi\b/g, "π")
+    .replace(/\\times\b/g, "×")
+    .replace(/\\cdot\b/g, "·")
+    .replace(/\\div\b/g, "÷")
+    .replace(/\\pm\b/g, "±")
+    .replace(/\\leq\b/g, "≤")
+    .replace(/\\geq\b/g, "≥")
+    .replace(/\\neq\b/g, "≠")
+    .replace(/\\approx\b/g, "≈")
+    .replace(/\\infty\b/g, "∞")
+    .replace(/\\degree\b/g, "°")
+    .replace(/\^\{?2\}?/g, "²")
+    .replace(/\^\{?3\}?/g, "³")
+    .replace(/\\\[/g, "")
+    .replace(/\\\]/g, "")
+    .replace(/\\\(/g, "")
+    .replace(/\\\)/g, "")
+    .replace(/\$\$/g, "")
+    .replace(/\$/g, "")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/\*\*(.*?)\*\*/gs, "$1")
+    .replace(/__(.*?)__/gs, "$1")
+    .replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, "$1")
+    .replace(/^\s*[-*]\s+/gm, "• ")
+    .replace(/```[a-zA-Z]*\n?/g, "")
+    .replace(/```/g, "")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/\\([{}])/g, "$1")
+    .replace(/[ \t]+$/gm, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
 };
 
 const scrollToBottom = () => {
@@ -72,12 +66,15 @@ const scrollToBottom = () => {
   chatContainer.scrollTo(0, chatContainer.scrollHeight);
 };
 
-const saveChats = () => {
+const saveVisibleChats = () => {
   if (!chatContainer) return;
   localStorage.setItem("saved-chats", chatContainer.innerHTML);
 };
 
-// Load theme and saved chats.
+const saveConversationHistory = () => {
+  localStorage.setItem("chat-history", JSON.stringify(conversationHistory));
+};
+
 const loadDataFromLocalstorage = () => {
   const savedChats = localStorage.getItem("saved-chats");
   const savedTheme = localStorage.getItem("themeColor") || "light_mode";
@@ -108,8 +105,7 @@ const createMessageElement = (content, ...classes) => {
   return div;
 };
 
-// Request an answer from the Netlify function.
-const generateAPIResponse = async (incomingMessageDiv) => {
+const generateAPIResponse = async (incomingMessageDiv, currentMessage) => {
   const textElement = incomingMessageDiv.querySelector(".text");
 
   try {
@@ -118,7 +114,10 @@ const generateAPIResponse = async (incomingMessageDiv) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ message: userMessage }),
+      body: JSON.stringify({
+        message: currentMessage,
+        history: conversationHistory,
+      }),
     });
 
     const responseText = await response.text();
@@ -142,13 +141,32 @@ const generateAPIResponse = async (incomingMessageDiv) => {
       throw new Error("The chatbot returned an empty response.");
     }
 
-    textElement.textContent = cleanChatbotResponse(data.reply);
-    saveChats();
+    const cleanedResponse = cleanChatbotResponse(data.reply);
+    textElement.textContent = cleanedResponse;
+
+    conversationHistory.push({
+      role: "user",
+      text: currentMessage,
+    });
+
+    conversationHistory.push({
+      role: "model",
+      text: cleanedResponse,
+    });
+
+    if (conversationHistory.length > MAX_HISTORY_MESSAGES) {
+      conversationHistory = conversationHistory.slice(-MAX_HISTORY_MESSAGES);
+    }
+
+    saveConversationHistory();
+    saveVisibleChats();
     scrollToBottom();
   } catch (error) {
     console.error("Chatbot error:", error);
+
     textElement.textContent =
       error.message || "Unable to connect to the chatbot.";
+
     incomingMessageDiv.classList.add("error");
   } finally {
     isResponseGenerating = false;
@@ -157,7 +175,7 @@ const generateAPIResponse = async (incomingMessageDiv) => {
   }
 };
 
-const showLoadingAnimation = () => {
+const showLoadingAnimation = (currentMessage) => {
   const html = `<div class="message-content">
                   <img class="avatar" src="images/gemini.svg" alt="Chatbot avatar">
                   <p class="text"></p>
@@ -173,10 +191,9 @@ const showLoadingAnimation = () => {
 
   chatContainer.appendChild(incomingMessageDiv);
   scrollToBottom();
-  generateAPIResponse(incomingMessageDiv);
+  generateAPIResponse(incomingMessageDiv, currentMessage);
 };
 
-// This function is global because the copy button uses onclick in the HTML string.
 window.copyMessage = async (copyButton) => {
   const messageText =
     copyButton.parentElement.querySelector(".text")?.innerText || "";
@@ -186,12 +203,48 @@ window.copyMessage = async (copyButton) => {
   try {
     await navigator.clipboard.writeText(messageText);
     copyButton.innerText = "done";
+
     setTimeout(() => {
       copyButton.innerText = "content_copy";
     }, 1000);
   } catch (error) {
     console.error("Clipboard error:", error);
   }
+};
+
+const handleOutgoingChat = (providedMessage = "") => {
+  if (!typingForm || !typingInput || !chatContainer) {
+    console.error("Required chatbot HTML elements were not found.");
+    return;
+  }
+
+  const currentMessage = providedMessage.trim() || typingInput.value.trim();
+
+  if (!currentMessage || isResponseGenerating) return;
+
+  userMessage = currentMessage;
+  isResponseGenerating = true;
+
+  const html = `<div class="message-content">
+                  <img class="avatar" src="images/user.jpg" alt="User avatar">
+                  <p class="text"></p>
+                </div>`;
+
+  const outgoingMessageDiv = createMessageElement(html, "outgoing");
+
+  outgoingMessageDiv.querySelector(".text").textContent = currentMessage;
+
+  chatContainer.appendChild(outgoingMessageDiv);
+  typingForm.reset();
+  typingInput.style.height = "auto";
+  document.body.classList.add("hide-header");
+
+  saveVisibleChats();
+  scrollToBottom();
+
+  setTimeout(() => {
+    showLoadingAnimation(currentMessage);
+  }, 300);
 };
 
 if (typingInput) {
@@ -208,39 +261,28 @@ if (typingInput) {
   });
 }
 
-const handleOutgoingChat = (providedMessage = "") => {
-  if (!typingForm || !typingInput || !chatContainer) {
-    console.error("Required chatbot HTML elements were not found.");
-    return;
-  }
+if (typingForm) {
+  typingForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    handleOutgoingChat();
+  });
+}
 
-  userMessage = providedMessage.trim() || typingInput.value.trim();
+suggestions.forEach((suggestion) => {
+  suggestion.addEventListener("click", () => {
+    const suggestionText =
+      suggestion.querySelector(".text")?.innerText.trim() || "";
 
-  if (!userMessage || isResponseGenerating) return;
-
-  isResponseGenerating = true;
-
-  const html = `<div class="message-content">
-                  <img class="avatar" src="images/user.jpg" alt="User avatar">
-                  <p class="text"></p>
-                </div>`;
-
-  const outgoingMessageDiv = createMessageElement(html, "outgoing");
-  outgoingMessageDiv.querySelector(".text").textContent = userMessage;
-  chatContainer.appendChild(outgoingMessageDiv);
-
-  typingForm.reset();
-  typingInput.style.height = "auto";
-  document.body.classList.add("hide-header");
-
-  saveChats();
-  scrollToBottom();
-  setTimeout(showLoadingAnimation, 300);
-};
+    if (suggestionText) {
+      handleOutgoingChat(suggestionText);
+    }
+  });
+});
 
 if (toggleThemeButton) {
   toggleThemeButton.addEventListener("click", () => {
     const isDarkMode = document.body.classList.contains("dark_mode");
+
     const newTheme = isDarkMode ? "light_mode" : "dark_mode";
 
     document.body.classList.remove("light_mode", "dark_mode");
@@ -256,6 +298,8 @@ if (deleteChatButton) {
   deleteChatButton.addEventListener("click", () => {
     const deleteChats = () => {
       localStorage.removeItem("saved-chats");
+      localStorage.removeItem("chat-history");
+      conversationHistory = [];
       window.location.reload();
     };
 
@@ -272,6 +316,8 @@ if (deleteChatButton) {
         if (!result.isConfirmed) return;
 
         localStorage.removeItem("saved-chats");
+        localStorage.removeItem("chat-history");
+        conversationHistory = [];
 
         Swal.fire(
           "Deleted!",
@@ -284,24 +330,6 @@ if (deleteChatButton) {
     } else if (window.confirm("Are you sure you want to delete all chats?")) {
       deleteChats();
     }
-  });
-}
-
-suggestions.forEach((suggestion) => {
-  suggestion.addEventListener("click", () => {
-    const suggestionText =
-      suggestion.querySelector(".text")?.innerText.trim() || "";
-
-    if (suggestionText) {
-      handleOutgoingChat(suggestionText);
-    }
-  });
-});
-
-if (typingForm) {
-  typingForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    handleOutgoingChat();
   });
 }
 
