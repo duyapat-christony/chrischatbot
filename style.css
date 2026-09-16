@@ -450,3 +450,74 @@ body.hide-header .header {
     transform: translateY(10px);
   }
 }
+
+.manual-copy-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.manual-copy-dialog {
+  width: min(520px, 100%);
+  max-height: 85vh;
+  padding: 20px;
+  overflow: auto;
+
+  color: #222222;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.35);
+}
+
+.manual-copy-dialog h2 {
+  margin: 0 0 10px;
+  color: #222222;
+  font-size: 20px;
+}
+
+.manual-copy-dialog p {
+  margin: 0 0 12px;
+  color: #444444;
+  line-height: 1.5;
+}
+
+.manual-copy-dialog textarea {
+  display: block;
+  width: 100%;
+  min-height: 220px;
+  padding: 12px;
+
+  color: #222222;
+  background: #f8f9fa;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+
+  font: inherit;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.manual-copy-close {
+  display: block;
+  margin: 14px 0 0 auto;
+  padding: 9px 18px;
+
+  color: #ffffff;
+  background: #0d6efd;
+  border: 0;
+  border-radius: 7px;
+
+  font: inherit;
+  cursor: pointer;
+}
+
+.manual-copy-close:hover {
+  background: #0b5ed7;
+}

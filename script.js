@@ -194,23 +194,148 @@ const showLoadingAnimation = (currentMessage) => {
   generateAPIResponse(incomingMessageDiv, currentMessage);
 };
 
-window.copyMessage = async (copyButton) => {
-  const messageText =
-    copyButton.parentElement.querySelector(".text")?.innerText || "";
+window.copyMessage = async function (copyButton) {
+  const messageContainer = copyButton.closest(".message");
+  const textElement = messageContainer?.querySelector(".text");
+  const messageText = textElement?.innerText?.trim() || "";
 
-  if (!messageText) return;
+  if (!messageText) {
+    console.error("Copy failed: No message text was found.");
+    showCopyStatus(copyButton, false);
+    return;
+  }
 
   try {
-    await navigator.clipboard.writeText(messageText);
-    copyButton.innerText = "done";
+    // This normally works when the chatbot is opened directly,
+    // but Google Sites may block it inside a full-page embed.
+    if (
+      window.isSecureContext &&
+      navigator.clipboard &&
+      typeof navigator.clipboard.writeText === "function"
+    ) {
+      await navigator.clipboard.writeText(messageText);
+      showCopyStatus(copyButton, true);
+      return;
+    }
+  } catch (clipboardError) {
+    console.warn(
+      "Clipboard API was blocked. Trying fallback copy.",
+      clipboardError,
+    );
+  }
 
-    setTimeout(() => {
-      copyButton.innerText = "content_copy";
-    }, 1000);
-  } catch (error) {
-    console.error("Clipboard error:", error);
+  try {
+    const copied = fallbackCopyText(messageText);
+
+    if (!copied) {
+      throw new Error("The fallback copy command was rejected.");
+    }
+
+    showCopyStatus(copyButton, true);
+  } catch (fallbackError) {
+    console.error("Fallback copy failed:", fallbackError);
+    showManualCopyDialog(messageText, copyButton);
   }
 };
+
+function fallbackCopyText(text) {
+  const textArea = document.createElement("textarea");
+
+  textArea.value = text;
+  textArea.setAttribute("readonly", "");
+  textArea.setAttribute("aria-label", "Chatbot response");
+
+  textArea.style.position = "fixed";
+  textArea.style.top = "0";
+  textArea.style.left = "-9999px";
+  textArea.style.width = "1px";
+  textArea.style.height = "1px";
+  textArea.style.opacity = "0";
+
+  document.body.appendChild(textArea);
+
+  textArea.focus();
+  textArea.select();
+  textArea.setSelectionRange(0, text.length);
+
+  let copied = false;
+
+  try {
+    copied = document.execCommand("copy");
+  } finally {
+    document.body.removeChild(textArea);
+  }
+
+  return copied;
+}
+
+function showCopyStatus(copyButton, succeeded) {
+  copyButton.innerText = succeeded ? "done" : "error";
+  copyButton.title = succeeded ? "Copied to clipboard" : "Unable to copy";
+
+  setTimeout(() => {
+    copyButton.innerText = "content_copy";
+    copyButton.title = "Copy response";
+  }, 1500);
+}
+
+function showManualCopyDialog(text, copyButton) {
+  const existingDialog = document.querySelector(".manual-copy-dialog");
+
+  if (existingDialog) {
+    existingDialog.remove();
+  }
+
+  const overlay = document.createElement("div");
+  overlay.className = "manual-copy-overlay";
+
+  const dialog = document.createElement("div");
+  dialog.className = "manual-copy-dialog";
+  dialog.setAttribute("role", "dialog");
+  dialog.setAttribute("aria-modal", "true");
+  dialog.setAttribute("aria-label", "Copy the chatbot response manually");
+
+  const heading = document.createElement("h2");
+  heading.textContent = "Copy response";
+
+  const instruction = document.createElement("p");
+  instruction.textContent =
+    "Automatic copying is blocked by the embedded page. Select the text below, then press Ctrl+C or use Copy from the browser menu.";
+
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.readOnly = true;
+  textArea.setAttribute("aria-label", "Chatbot response to copy");
+
+  const closeButton = document.createElement("button");
+  closeButton.type = "button";
+  closeButton.textContent = "Close";
+  closeButton.className = "manual-copy-close";
+
+  const closeDialog = () => {
+    overlay.remove();
+    copyButton.focus();
+  };
+
+  closeButton.addEventListener("click", closeDialog);
+
+  overlay.addEventListener("click", (event) => {
+    if (event.target === overlay) {
+      closeDialog();
+    }
+  });
+
+  dialog.appendChild(heading);
+  dialog.appendChild(instruction);
+  dialog.appendChild(textArea);
+  dialog.appendChild(closeButton);
+  overlay.appendChild(dialog);
+  document.body.appendChild(overlay);
+
+  textArea.focus();
+  textArea.select();
+  textArea.setSelectionRange(0, textArea.value.length);
+}
 
 const handleOutgoingChat = (providedMessage = "") => {
   if (!typingForm || !typingInput || !chatContainer) {
