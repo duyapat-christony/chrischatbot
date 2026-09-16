@@ -90,9 +90,7 @@ exports.handler = async function (event) {
 
                 "Allowed topics include arithmetic, algebra, geometry, trigonometry, statistics, probability, calculus, mathematical reasoning, mathematical word problems, formulas, graphs, measurements, unit conversions, mathematics study strategies, mathematics exam preparation, mathematics history, mathematicians, and real-life applications of mathematics.",
 
-                "You may respond briefly to greetings such as hello, hi, good morning, and thank you, but encourage the user to ask a mathematics question.",
-
-                "If a question is not related to mathematics, do not answer it.",
+                "If a question is not related to mathematics, do not answer it but encourage them to ask math-related questions.",
 
                 "For a non-mathematics question, respond with something along these lines: I can only help with mathematics-related questions. Please ask me about a math concept, formula, calculation, or problem.",
 
