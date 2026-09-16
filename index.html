@@ -402,25 +402,128 @@
           ],
         };
 
-        function displayRandomQuestions() {
-          for (const [key, value] of Object.entries(questions)) {
-            const randomIndex = Math.floor(Math.random() * value.length);
-            const randomQuestion = value[randomIndex];
+        const grade9QuestionSets = {
+          question1: [
+            "What are the important mathematics topics I need to master in Grade 9?",
+            "How can I improve my problem-solving skills in Grade 9 mathematics?",
+            "What study strategies can help me understand Grade 9 mathematics?",
+            "How can I prepare effectively for a Grade 9 mathematics examination?",
+            "What are common mistakes students make in Grade 9 mathematics?",
+            "How can I check whether my solution to a mathematics problem is correct?",
+            "How can I become more confident when solving algebra problems?",
+            "What Grade 9 mathematics skills are useful in everyday life?",
+            "How can I organize my notes for Grade 9 mathematics?",
+            "What should I do when I cannot understand a mathematics lesson?",
+            "How can I practice mathematics without becoming overwhelmed?",
+            "What is the best way to review for a mathematics quiz?",
+            "How can I improve my ability to solve mathematical word problems?",
+            "Why is it important to show complete solutions in mathematics?",
+            "How can I avoid careless mistakes during mathematics examinations?",
+          ],
 
-            // Display each random question in its corresponding element
-            document.getElementById(key).innerText = randomQuestion;
+          question2: [
+            "What is the difference between a linear equation and a quadratic equation?",
+            "How do I identify a quadratic equation?",
+            "How do I solve a quadratic equation by factoring?",
+            "How do I solve a quadratic equation using the quadratic formula?",
+            "How do I solve a quadratic equation by completing the square?",
+            "What is the discriminant of a quadratic equation?",
+            "How does the discriminant determine the number of real solutions?",
+            "How do I find the sum and product of the roots of a quadratic equation?",
+            "How do I translate a quadratic word problem into an equation?",
+            "What are the different forms of a quadratic function?",
+            "How do I change a quadratic equation from standard form to vertex form?",
+            "How do I graph a quadratic function?",
+            "What do the vertex and axis of symmetry represent?",
+            "How can I determine whether a parabola opens upward or downward?",
+            "How do I find the zeros of a quadratic function?",
+          ],
+
+          question3: [
+            "What is a quadratic inequality?",
+            "How do I solve a quadratic inequality?",
+            "How do I represent the solution of an inequality on a number line?",
+            "What are rational algebraic expressions?",
+            "How do I simplify a rational algebraic expression?",
+            "How do I multiply and divide rational algebraic expressions?",
+            "How do I add and subtract rational algebraic expressions?",
+            "Why must excluded values be identified in rational expressions?",
+            "How do I solve equations involving rational algebraic expressions?",
+            "What is direct variation?",
+            "What is inverse variation?",
+            "What is joint variation?",
+            "How do I write an equation that represents a variation relationship?",
+            "How can variation be used to solve real-life problems?",
+            "How do I distinguish direct variation from inverse variation?",
+          ],
+
+          question4: [
+            "What are the properties of parallelograms?",
+            "How do I prove that a quadrilateral is a parallelogram?",
+            "What is the difference between a rectangle, rhombus, and square?",
+            "How do I solve problems involving similar triangles?",
+            "What are the conditions for triangle similarity?",
+            "How do proportions help solve similar-triangle problems?",
+            "How is the Pythagorean theorem used in real-life situations?",
+            "How do I find the distance between two points on a coordinate plane?",
+            "How do I find the midpoint of a line segment?",
+            "What are the basic trigonometric ratios?",
+            "How do I use sine, cosine, and tangent?",
+            "How do I determine which trigonometric ratio to use?",
+            "How do I solve right-triangle problems?",
+            "How can trigonometry be used to determine an unknown height?",
+            "How can trigonometry be used to determine an unknown distance?",
+          ],
+        };
+
+        function displayRandomQuestions() {
+          const source = new URLSearchParams(window.location.search).get(
+            "source",
+          );
+
+          const activeQuestions =
+            source === "google-site"
+              ? {
+                  ...questions,
+                  ...grade9QuestionSets,
+                }
+              : questions;
+
+          for (const [key, value] of Object.entries(activeQuestions)) {
+            const targetElement = document.getElementById(key);
+
+            if (!targetElement || !Array.isArray(value) || value.length === 0) {
+              continue;
+            }
+
+            const randomIndex = Math.floor(Math.random() * value.length);
+
+            targetElement.innerText = value[randomIndex];
           }
-          // Assign random colors to each icon
-          for (let i = 1; i <= 4; i++) {
-            const iconElement = document.getElementById(`icon${i}`);
+
+          for (let index = 1; index <= 4; index += 1) {
+            const iconElement = document.getElementById(`icon${index}`);
+
+            if (!iconElement) {
+              continue;
+            }
+
+            const iconChoices = activeQuestions[`icon${index}`];
+
+            if (Array.isArray(iconChoices) && iconChoices.length > 0) {
+              const randomIconIndex = Math.floor(
+                Math.random() * iconChoices.length,
+              );
+
+              iconElement.innerText = iconChoices[randomIconIndex];
+            }
+
             const randomColor =
               colors[Math.floor(Math.random() * colors.length)];
+
             iconElement.style.color = randomColor;
           }
         }
-
-        // Call the function to display random questions on page load
-        window.onload = displayRandomQuestions;
       </script>
     </header>
 

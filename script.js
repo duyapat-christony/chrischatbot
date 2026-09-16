@@ -7,6 +7,18 @@ const deleteChatButton = document.querySelector("#delete-chat-button");
 
 const NETLIFY_FUNCTION_URL = "/.netlify/functions/gemini";
 const MAX_HISTORY_MESSAGES = 20;
+const getUserAvatar = () => {
+  const urlParameters = new URLSearchParams(window.location.search);
+  const source = urlParameters.get("source");
+
+  if (source === "google-site") {
+    return "images/google-site-favicon.png";
+  }
+
+  return "images/user.jpg";
+};
+
+const USER_AVATAR_URL = getUserAvatar();
 
 let userMessage = "";
 let isResponseGenerating = false;
@@ -382,7 +394,7 @@ const handleOutgoingChat = (providedMessage = "") => {
   isResponseGenerating = true;
 
   const html = `<div class="message-content">
-                  <img class="avatar" src="images/user.jpg" alt="User avatar">
+                  <img class="avatar" src="${USER_AVATAR_URL}" alt="User avatar">
                   <p class="text"></p>
                 </div>`;
 
