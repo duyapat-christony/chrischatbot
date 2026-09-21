@@ -91,7 +91,17 @@ const scrollToMessageStart = (messageElement) => {
 
 const saveVisibleChats = () => {
   if (!chatContainer) return;
-  localStorage.setItem("saved-chats", chatContainer.innerHTML);
+
+  // Save a clean copy and exclude temporary loading messages.
+  const cleanChatContainer = chatContainer.cloneNode(true);
+
+  cleanChatContainer
+    .querySelectorAll(".message.loading")
+    .forEach((loadingMessage) => {
+      loadingMessage.remove();
+    });
+
+  localStorage.setItem("saved-chats", cleanChatContainer.innerHTML);
 };
 
 const saveConversationHistory = () => {
@@ -114,11 +124,27 @@ const loadDataFromLocalstorage = () => {
     displayRandomQuestions();
   }
 
-  if (chatContainer) {
-    chatContainer.innerHTML = savedChats || "";
-    document.body.classList.toggle("hide-header", Boolean(savedChats));
-    scrollToBottom();
+  if (!chatContainer) return;
+
+  chatContainer.innerHTML = savedChats || "";
+
+  // Remove stale loading messages saved by an older version.
+  chatContainer
+    .querySelectorAll(".message.loading")
+    .forEach((loadingMessage) => {
+      loadingMessage.remove();
+    });
+
+  const hasSavedMessages = chatContainer.innerHTML.trim() !== "";
+
+  if (hasSavedMessages) {
+    localStorage.setItem("saved-chats", chatContainer.innerHTML);
+  } else {
+    localStorage.removeItem("saved-chats");
   }
+
+  document.body.classList.toggle("hide-header", hasSavedMessages);
+  scrollToBottom();
 };
 
 const createMessageElement = (content, ...classes) => {
@@ -165,8 +191,11 @@ const generateAPIResponse = async (incomingMessageDiv, currentMessage) => {
     }
 
     const cleanedResponse = cleanChatbotResponse(data.reply);
-
     textElement.textContent = cleanedResponse;
+
+    // Remove the loading state before saving the completed response.
+    incomingMessageDiv.classList.remove("loading");
+    incomingMessageDiv.classList.remove("error");
 
     conversationHistory.push({
       role: "user",
@@ -185,10 +214,7 @@ const generateAPIResponse = async (incomingMessageDiv, currentMessage) => {
     saveConversationHistory();
     saveVisibleChats();
 
-    /*
-     * Show the beginning of the chatbot's response.
-     * Do not scroll to the bottom here.
-     */
+    // Show the beginning of the completed response.
     requestAnimationFrame(() => {
       scrollToMessageStart(incomingMessageDiv);
     });
@@ -198,7 +224,11 @@ const generateAPIResponse = async (incomingMessageDiv, currentMessage) => {
     textElement.textContent =
       error.message || "Unable to connect to the chatbot.";
 
+    incomingMessageDiv.classList.remove("loading");
     incomingMessageDiv.classList.add("error");
+
+    // Save the error message, not the temporary loading animation.
+    saveVisibleChats();
 
     requestAnimationFrame(() => {
       scrollToMessageStart(incomingMessageDiv);
@@ -206,11 +236,6 @@ const generateAPIResponse = async (incomingMessageDiv, currentMessage) => {
   } finally {
     isResponseGenerating = false;
     incomingMessageDiv.classList.remove("loading");
-
-    /*
-     * Do not call scrollToBottom() here.
-     * Calling it here causes long responses to jump to the end.
-     */
   }
 };
 
